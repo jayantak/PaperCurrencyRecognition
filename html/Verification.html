@@ -1,0 +1,444 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Verification</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-29"><meta name="DC.source" content="Verification.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Resetting</a></li><li><a href="#2">Input images</a></li><li><a href="#3">Data</a></li><li><a href="#4">Classification</a></li><li><a href="#5">Pixel Ratio</a></li><li><a href="#6">Reference Data</a></li><li><a href="#7">Area Information</a></li><li><a href="#8">Register Data</a></li><li><a href="#10">Parameters</a></li><li><a href="#12">ID Mark</a></li><li><a href="#13">Watermark</a></li><li><a href="#14">Register - mean</a></li><li><a href="#15">Fluorescence</a></li><li><a href="#16">Security Thread</a></li><li><a href="#17">OVI</a></li><li><a href="#18">Register - count</a></li><li><a href="#19">Latent Image</a></li><li><a href="#20">Final Parameter Error</a></li></ul></div><h2>Resetting<a name="1"></a></h2><pre class="codeinput">clc;
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+warning(<span class="string">'off'</span>, <span class="string">'all'</span>);
+</pre><h2>Input images<a name="2"></a></h2><pre class="codeinput">input = <span class="string">'../../Notes_Images/Database/rupee_100_2_'</span>;
+<span class="comment">% input2 = '../../Notes_Images/Scanned2/rupee_100_1_';</span>
+inputFront = imread(strcat(input,<span class="string">'front_norm.jpg'</span>));
+inputBack = imread(strcat(input,<span class="string">'back_norm.jpg'</span>));
+inputFrontWhite = imread(strcat(input, <span class="string">'front_white.jpg'</span>));
+inputBackWhite = imread(strcat(input, <span class="string">'back_white.jpg'</span>));
+inputFrontUV = imread(strcat(input, <span class="string">'front_uv.jpg'</span>));
+inputBackUV = imread(strcat(input, <span class="string">'back_uv.jpg'</span>));
+<span class="comment">% inputTest = imread(strcat(input2,'front.jpg'));</span>
+
+index = 4;
+</pre><h2>Data<a name="3"></a></h2><pre class="codeinput">lengthInCM = [13.7 14.7 14.7 15.7 16.7 17.7];
+widthInCM = [6.3 6.3 7.3 7.3 7.3 7.3];
+denominations = {<span class="string">'10'</span>,<span class="string">'20'</span>,<span class="string">'50'</span>,<span class="string">'100'</span>,<span class="string">'500'</span>,<span class="string">'1000'</span>};
+</pre><h2>Classification<a name="4"></a></h2><pre class="codeinput">X = Classification(inputFront, inputBack)
+</pre><pre class="codeoutput">
+X =
+
+     4
+
+</pre><h2>Pixel Ratio<a name="5"></a></h2><pre class="codeinput">[width(1), length(1), col] = size(inputFront);
+[width(2), length(2), col] = size(inputBack);
+pixelRatio = mean([mean([length(1)/lengthInCM(X) width(1)/widthInCM(X)])]);
+
+paraErr = zeros(1, 9);
+paraLegend = {<span class="string">'Watermark'</span>, <span class="string">'Security Thread'</span>, <span class="string">'Latent Image'</span>, <span class="string">'Microlettering'</span>, <span class="string">'Intaglio Printing'</span>, <span class="string">'ID Mark'</span>, <span class="string">'Fluorescence'</span>, <span class="string">'Optically Variable Ink'</span>, <span class="string">'See-Through Register'</span>};
+</pre><h2>Reference Data<a name="6"></a></h2><pre class="codeinput">WMMeanReference = dlmread(<span class="string">'Reference/Counterfeit/WMMean.dat'</span>);
+WMStdReference = dlmread(<span class="string">'Reference/Counterfeit/WMStd.dat'</span>);
+RegisterMeanReference = dlmread(<span class="string">'Reference/Counterfeit/RegisterMean.dat'</span>);
+RegisterStdReference = dlmread(<span class="string">'Reference/Counterfeit/RegisterStd.dat'</span>);
+STMeanReference = dlmread(<span class="string">'Reference/Counterfeit/STMean.dat'</span>);
+STStdReference = dlmread(<span class="string">'Reference/Counterfeit/STStd.dat'</span>);
+UVMeanReference = dlmread(<span class="string">'Reference/Counterfeit/UVMean.dat'</span>);
+UVHueReference = dlmread(<span class="string">'Reference/Counterfeit/UVHue.dat'</span>);
+OVIHueReference = dlmread(<span class="string">'Reference/Counterfeit/OVIHue.dat'</span>);
+</pre><h2>Area Information<a name="7"></a></h2><pre class="codeinput">watermarkArea = dlmread(<span class="string">'Reference/Counterfeit/WatermarkArea.dat'</span>);
+microletteringArea = dlmread(<span class="string">'Reference/Counterfeit/MicroletteringArea.dat'</span>);
+registerArea = dlmread(<span class="string">'Reference/Counterfeit/RegisterArea.dat'</span>);
+IDMarkArea = dlmread(<span class="string">'Reference/Counterfeit/IDMarkArea.dat'</span>);
+securityThreadArea = dlmread(<span class="string">'Reference/Counterfeit/SecurityThreadArea.dat'</span>);
+latentImageArea = dlmread(<span class="string">'Reference/Counterfeit/LatentImageArea.dat'</span>);
+OVIArea = dlmread(<span class="string">'Reference/Counterfeit/OVIArea.dat'</span>);
+intaglioArea = dlmread(<span class="string">'Reference/Counterfeit/IntaglioArea.dat'</span>);
+</pre><h2>Register Data<a name="8"></a></h2><pre class="codeinput">registerBWsizeScanned = {[10 90], [0 150], [120 270], [10 100], [80 160], [80 140]};
+registerBWsizeDatabase = {[90 140], [0 150], [10 100], [80 210], [20 100], [2 100]};
+registerObjNum = [3 4 4 5 6 7];
+registerBWThreshScanned = [0.9 0.75 0.8 0.86 0.77 0.8705];
+registerBWThreshDatabase = [0.5 0.89 0.67 0.775 0.5 0.85];
+</pre><h2>Parameters<a name="10"></a></h2><h2>ID Mark<a name="12"></a></h2><pre class="codeinput"><span class="keyword">if</span> X~=1
+    <span class="keyword">if</span> X ~=  Shape(imcrop(inputFront, IDMarkArea(X,:)*pixelRatio))
+        paraErr(6) = 0.1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2>Watermark<a name="13"></a></h2><pre class="codeinput">grayImg = rgb2gray(inputFrontWhite);
+xx = imcrop(grayImg, watermarkArea(X,:)*pixelRatio);
+WMMean = mean2(xx);
+WMErr(1) = abs(WMMean - WMMeanReference(X))/WMMeanReference(X);
+WMStd = std2(imcrop(grayImg, watermarkArea(X,:)*pixelRatio));
+WMErr(2) = abs(WMStd - WMStdReference(X))/WMStdReference(X);
+paraErr(1) = mean(WMErr);
+</pre><h2>Register - mean<a name="14"></a></h2><pre class="codeinput">grayImg = rgb2gray(inputFrontWhite);
+xx = imcrop(grayImg, registerArea(X,:)*pixelRatio);
+RegisterMean = mean2(xx);
+RegisterErr = abs(RegisterMean - RegisterMeanReference(X))/RegisterMeanReference(X);
+<span class="comment">% RegisterStd = std2(imcrop(grayImg, registerArea(X,:)*pixelRatio(1)));</span>
+<span class="comment">% RegisterErr(2) = abs(RegisterStd - RegisterStdReference(X))/RegisterStdReference(X);</span>
+paraErr(9) = mean(RegisterErr);
+</pre><h2>Fluorescence<a name="15"></a></h2><pre class="codeinput">grayImg = rgb2gray(inputFrontUV);
+UVMean = mean2(grayImg);
+UVErr(1) = abs(UVMean - UVMeanReference(X))/UVMeanReference(X);
+hueImg = rgb2hsv(inputFrontUV);
+UVHue = mean2(hueImg(:,:,1));
+UVErr(2) = abs(UVHue - UVHueReference(X))/UVHueReference(X);
+paraErr(7) = mean(UVErr);
+</pre><h2>Security Thread<a name="16"></a></h2><pre class="codeinput">xx = imcrop(inputFrontWhite, securityThreadArea(X,:)*pixelRatio);
+grayImg = rgb2gray(xx);
+figure(); imshow(grayImg);
+STMean = mean2(grayImg);
+STErr(1) = abs(STMean - STMeanReference(X))/STMeanReference(X);
+STStd = std2(grayImg);
+STErr(2) = abs(STStd - STStdReference(X))/STStdReference(X);
+paraErr(2) = mean(STErr);
+</pre><img vspace="5" hspace="5" src="Verification_01.png" alt=""> <h2>OVI<a name="17"></a></h2><pre class="codeinput">hueImg = rgb2hsv(imcrop(inputFrontWhite, OVIArea(X,:)*pixelRatio));
+OVIHue = mean2(hueImg(:,:,1));
+paraErr(8) = abs(OVIHue - OVIHueReference(X))/OVIHueReference(X);
+</pre><h2>Register - count<a name="18"></a></h2><pre class="codeinput">imgTest = imcrop(inputFront, registerArea(X,:)*pixelRatio);
+figure(); imshow(imgTest);
+imgTest = rgb2gray(imgTest);
+imgTest = im2bw(imgTest, registerBWThreshDatabase(X));
+imgTest = ~imgTest;
+figure(); imshow(imgTest);
+
+<span class="comment">% registerArea2 = registerArea(X,:) + [-0.1 -0.1 0 0.1];</span>
+<span class="comment">% imgTest = imcrop(inputTest, registerArea2*79);</span>
+<span class="comment">% imshow(imgTest);</span>
+<span class="comment">% imgTest = rgb2gray(imgTest);</span>
+<span class="comment">% imgTest = im2bw(imgTest, registerBWThresh(X));</span>
+<span class="comment">% imgTest = ~imgTest;</span>
+
+regProps = regionprops(imgTest, <span class="string">'Area'</span>);
+regProps.Area
+imgTest = bwareafilt(imgTest, registerBWsizeDatabase{X});
+figure(); imshow(imgTest);
+regProps = regionprops(imgTest, <span class="string">'Area'</span>);
+regProps.Area
+registerNumber = numel(regProps)
+<span class="keyword">if</span>(registerNum\ber ~= registerObjNum(X))
+    paraErr(9) = 0.1;
+<span class="keyword">end</span>
+n=0;
+</pre><pre class="codeoutput">
+ans =
+
+   113
+
+
+ans =
+
+    12
+
+
+ans =
+
+     2
+
+
+ans =
+
+    63
+
+
+ans =
+
+    26
+
+
+ans =
+
+     2
+
+
+ans =
+
+     6
+
+
+ans =
+
+    44
+
+
+ans =
+
+     3
+
+
+ans =
+
+   113
+
+
+registerNumber =
+
+     1
+
+</pre><pre class="codeoutput error">Undefined function or variable 'registerNum'.
+
+Error in Verification (line 138)
+if(registerNum\ber ~= registerObjNum(X))
+</pre><h2>Latent Image<a name="19"></a></h2><pre class="codeinput">threshold = graythresh(inputFront);
+xx = imcrop(inputFront,latentImageArea(X,:)*pixelRatio);
+img2 = im2bw(rgb2gray(xx),threshold);
+f=im2double(img2);
+choice=2;
+H=[-1 -1 -1; 2 2 2;-1 -1 -1];
+V=[-1 2 -1;-1 2 -1;-1 2 -1];
+P45=[-1 -1 2;-1 2 -1;2 -1 -1];
+M45=[2 -1 -1;-1 2 -1;-1 -1 2];
+<span class="keyword">switch</span> choice
+    <span class="keyword">case</span> 1
+        DH=imfilter(f,H);
+        imshow(DH);
+    <span class="keyword">case</span> 2
+        DV=imfilter(f,V);
+<span class="comment">%         imshow(DV);</span>
+    <span class="keyword">case</span> 3
+        D45=imfilter(f,P45);
+        imshow(D45);
+    <span class="keyword">case</span> 4
+        DM45=imfilter(f,M45);
+        imshow(DM45);
+<span class="keyword">end</span>
+</pre><h2>Final Parameter Error<a name="20"></a></h2><pre class="codeinput">paraErr
+<span class="keyword">if</span>(max(paraErr)&gt;=0.2)
+    disp(<span class="string">'Counterfeit'</span>);
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Resetting
+clc;
+clear all;
+close all;
+warning('off', 'all');
+
+%% Input images
+input = '../../Notes_Images/Database/rupee_100_2_';
+% input2 = '../../Notes_Images/Scanned2/rupee_100_1_';
+inputFront = imread(strcat(input,'front_norm.jpg'));
+inputBack = imread(strcat(input,'back_norm.jpg'));
+inputFrontWhite = imread(strcat(input, 'front_white.jpg'));
+inputBackWhite = imread(strcat(input, 'back_white.jpg'));
+inputFrontUV = imread(strcat(input, 'front_uv.jpg'));
+inputBackUV = imread(strcat(input, 'back_uv.jpg'));
+% inputTest = imread(strcat(input2,'front.jpg'));
+
+index = 4;
+
+%% Data
+lengthInCM = [13.7 14.7 14.7 15.7 16.7 17.7];
+widthInCM = [6.3 6.3 7.3 7.3 7.3 7.3];
+denominations = {'10','20','50','100','500','1000'};
+
+%% Classification
+X = Classification(inputFront, inputBack)
+
+%% Pixel Ratio
+[width(1), length(1), col] = size(inputFront);
+[width(2), length(2), col] = size(inputBack);
+pixelRatio = mean([mean([length(1)/lengthInCM(X) width(1)/widthInCM(X)])]);
+
+paraErr = zeros(1, 9);
+paraLegend = {'Watermark', 'Security Thread', 'Latent Image', 'Microlettering', 'Intaglio Printing', 'ID Mark', 'Fluorescence', 'Optically Variable Ink', 'See-Through Register'};
+
+%% Reference Data
+WMMeanReference = dlmread('Reference/Counterfeit/WMMean.dat');
+WMStdReference = dlmread('Reference/Counterfeit/WMStd.dat');
+RegisterMeanReference = dlmread('Reference/Counterfeit/RegisterMean.dat');
+RegisterStdReference = dlmread('Reference/Counterfeit/RegisterStd.dat');
+STMeanReference = dlmread('Reference/Counterfeit/STMean.dat');
+STStdReference = dlmread('Reference/Counterfeit/STStd.dat');
+UVMeanReference = dlmread('Reference/Counterfeit/UVMean.dat');
+UVHueReference = dlmread('Reference/Counterfeit/UVHue.dat');
+OVIHueReference = dlmread('Reference/Counterfeit/OVIHue.dat');
+
+%% Area Information
+watermarkArea = dlmread('Reference/Counterfeit/WatermarkArea.dat');
+microletteringArea = dlmread('Reference/Counterfeit/MicroletteringArea.dat');
+registerArea = dlmread('Reference/Counterfeit/RegisterArea.dat');
+IDMarkArea = dlmread('Reference/Counterfeit/IDMarkArea.dat');
+securityThreadArea = dlmread('Reference/Counterfeit/SecurityThreadArea.dat');
+latentImageArea = dlmread('Reference/Counterfeit/LatentImageArea.dat');
+OVIArea = dlmread('Reference/Counterfeit/OVIArea.dat');
+intaglioArea = dlmread('Reference/Counterfeit/IntaglioArea.dat');
+
+%% Register Data
+registerBWsizeScanned = {[10 90], [0 150], [120 270], [10 100], [80 160], [80 140]};
+registerBWsizeDatabase = {[90 140], [0 150], [10 100], [80 210], [20 100], [2 100]};
+registerObjNum = [3 4 4 5 6 7];
+registerBWThreshScanned = [0.9 0.75 0.8 0.86 0.77 0.8705];
+registerBWThreshDatabase = [0.5 0.89 0.67 0.775 0.5 0.85];
+
+%% 
+%% Parameters
+%% 
+%% ID Mark
+if X~=1
+    if X ~=  Shape(imcrop(inputFront, IDMarkArea(X,:)*pixelRatio))
+        paraErr(6) = 0.1;
+    end
+end
+
+%% Watermark
+grayImg = rgb2gray(inputFrontWhite);
+xx = imcrop(grayImg, watermarkArea(X,:)*pixelRatio);
+WMMean = mean2(xx);
+WMErr(1) = abs(WMMean - WMMeanReference(X))/WMMeanReference(X);
+WMStd = std2(imcrop(grayImg, watermarkArea(X,:)*pixelRatio));
+WMErr(2) = abs(WMStd - WMStdReference(X))/WMStdReference(X);
+paraErr(1) = mean(WMErr);
+
+%% Register - mean
+grayImg = rgb2gray(inputFrontWhite);
+xx = imcrop(grayImg, registerArea(X,:)*pixelRatio);
+RegisterMean = mean2(xx);
+RegisterErr = abs(RegisterMean - RegisterMeanReference(X))/RegisterMeanReference(X);
+% RegisterStd = std2(imcrop(grayImg, registerArea(X,:)*pixelRatio(1)));
+% RegisterErr(2) = abs(RegisterStd - RegisterStdReference(X))/RegisterStdReference(X);
+paraErr(9) = mean(RegisterErr);
+
+%% Fluorescence
+grayImg = rgb2gray(inputFrontUV);
+UVMean = mean2(grayImg);
+UVErr(1) = abs(UVMean - UVMeanReference(X))/UVMeanReference(X);
+hueImg = rgb2hsv(inputFrontUV);
+UVHue = mean2(hueImg(:,:,1));
+UVErr(2) = abs(UVHue - UVHueReference(X))/UVHueReference(X);
+paraErr(7) = mean(UVErr);
+
+%% Security Thread
+xx = imcrop(inputFrontWhite, securityThreadArea(X,:)*pixelRatio);
+grayImg = rgb2gray(xx);
+figure(); imshow(grayImg);
+STMean = mean2(grayImg);
+STErr(1) = abs(STMean - STMeanReference(X))/STMeanReference(X);
+STStd = std2(grayImg);
+STErr(2) = abs(STStd - STStdReference(X))/STStdReference(X);
+paraErr(2) = mean(STErr);
+
+%% OVI
+hueImg = rgb2hsv(imcrop(inputFrontWhite, OVIArea(X,:)*pixelRatio));
+OVIHue = mean2(hueImg(:,:,1));
+paraErr(8) = abs(OVIHue - OVIHueReference(X))/OVIHueReference(X);
+
+%% Register - count
+imgTest = imcrop(inputFront, registerArea(X,:)*pixelRatio);
+figure(); imshow(imgTest);
+imgTest = rgb2gray(imgTest);
+imgTest = im2bw(imgTest, registerBWThreshDatabase(X));
+imgTest = ~imgTest;
+figure(); imshow(imgTest);
+
+% registerArea2 = registerArea(X,:) + [-0.1 -0.1 0 0.1];
+% imgTest = imcrop(inputTest, registerArea2*79);
+% imshow(imgTest);
+% imgTest = rgb2gray(imgTest);
+% imgTest = im2bw(imgTest, registerBWThresh(X));
+% imgTest = ~imgTest;
+
+regProps = regionprops(imgTest, 'Area');
+regProps.Area
+imgTest = bwareafilt(imgTest, registerBWsizeDatabase{X});
+figure(); imshow(imgTest);
+regProps = regionprops(imgTest, 'Area');
+regProps.Area
+registerNumber = numel(regProps)
+if(registerNum\ber ~= registerObjNum(X))
+    paraErr(9) = 0.1;
+end
+n=0;
+
+%% Latent Image
+threshold = graythresh(inputFront);
+xx = imcrop(inputFront,latentImageArea(X,:)*pixelRatio);
+img2 = im2bw(rgb2gray(xx),threshold);
+f=im2double(img2);
+choice=2;
+H=[-1 -1 -1; 2 2 2;-1 -1 -1];
+V=[-1 2 -1;-1 2 -1;-1 2 -1];
+P45=[-1 -1 2;-1 2 -1;2 -1 -1];
+M45=[2 -1 -1;-1 2 -1;-1 -1 2];
+switch choice
+    case 1
+        DH=imfilter(f,H);
+        imshow(DH);
+    case 2
+        DV=imfilter(f,V);
+%         imshow(DV);
+    case 3
+        D45=imfilter(f,P45);
+        imshow(D45);
+    case 4
+        DM45=imfilter(f,M45);
+        imshow(DM45);
+end
+
+%% Final Parameter Error
+paraErr
+if(max(paraErr)>=0.2)
+    disp('Counterfeit');
+end
+##### SOURCE END #####
+--></body></html>
